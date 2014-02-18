@@ -4,40 +4,43 @@
 	<title>My First HTML Form</title>
 </head>
 <body>
-<h3>User Login</h3>
-<form method="POST" action="http://requestb.in/18wzxuk1">
-    <p>
-        <label for="username">Username</label>
-        <input id="username" name="username" placeholder="Enter name here" type="text">
-    </p>
-    <p>
-        <label for="password">Password</label>
-        <input id="password" name="password" placeholder="Enter password here" type="password">
-    </p>
-    <p>
-        <button type="submit">Login</button>
-    </p>
-</form>
-<h3>Comppose an Email</h3>
-<form method="POST" action="http://requestb.in/18wzxuk1">
-    <p>
-        <label for="to">To</label>
-        <input id="to" name="to" placeholder="recipient@email.com" type="text">
-    </p>
-    <p>
-        <label for="from">From</label>
-        <input id="from" name="from" placeholder="sender@email.com" type="text">
-    </p>
-    <p>
-        <label for="subject">Subject</label>
-        <input id="subject" name="subject" placeholder="Email subject" type="text">
-    </p>
-    <p>
-        <textarea id="email_body" name="email_body" rows="10" cols="60">Content Here</textarea>
-    </p>
-    <p>
+    <h3>User Login</h3>
+    <form method="POST" action="http://requestb.in/18wzxuk1">
+        <p>
+            <label for="username">Username</label>
+            <input id="username" name="username" placeholder="Enter name here" type="text">
+        </p>
+        <p>
+            <label for="password">Password</label>
+            <input id="password" name="password" placeholder="Enter password here" type="password">
+        </p>
+        <p>
+            <button type="submit">Login</button>
+        </p>
+    </form>
+    <h3>Comppose an Email</h3>
+    <form method="POST" action="http://requestb.in/18wzxuk1">
+        <p>
+            <label for="to">To</label>
+            <input id="to" name="to" placeholder="recipient@email.com" type="text">
+        </p>
+        <p>
+            <label for="from">From</label>
+            <input id="from" name="from" placeholder="sender@email.com" type="text">
+        </p>
+        <p>
+            <label for="subject">Subject</label>
+            <input id="subject" name="subject" placeholder="Email subject" type="text">
+        </p>
+        <p>
+            <textarea id="email_body" name="email_body" placeholder="Content here"rows="10" cols="60"></textarea>
+        </p>
+        <label for="save_copy">
+            <input type="checkbox" id="save_copy" name="save_copy" value="yes" checked> Do you want to save a copy in the Sent folder?
+        </label>
+        <p>
         <button type="submit">Send</button>
-    </p>
-</form>
+        </p>
+    </form>
 </body>
 </html>
