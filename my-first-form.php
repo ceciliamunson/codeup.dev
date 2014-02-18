@@ -106,6 +106,15 @@ var_dump($_GET);
     Miami
 </label>
 <p>
+<label for="q4">Which of the following cities have you visited?</label>
+<select id="q4" name="q4[]" multiple>
+    <option value="chicago">Chicago</option>
+    <option value="denver">Denver</option>
+    <option value="boston">Boston</option>
+    <option value="new york">New York</option>
+</select>
+</p>
+<p>
     <button type="submit">Submit</button>
 </p>
 <p>What will you be learning at Codeup?</p>
