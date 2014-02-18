@@ -1,0 +1,129 @@
+<?php
+
+echo "<p>POST:</p>";
+var_dump($_POST);
+
+echo "<p>GET:</p>";
+var_dump($_GET);
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My First HTML Form</title>
+</head>
+<body>
+    <h3>User Login</h3>
+    <form method="POST" action="">
+        <p>
+            <label for="username">Username</label>
+            <input id="username" name="username" placeholder="Enter name here" type="text">
+        </p>
+        <p>
+            <label for="password">Password</label>
+            <input id="password" name="password" placeholder="Enter password here" type="password">
+        </p>
+        <p>
+            <button type="submit">Login</button>
+        </p>
+    </form>
+    <h3>Comppose an Email</h3>
+    <form method="POST" action="http://requestb.in/18wzxuk1">
+        <p>
+            <label for="to">To</label>
+            <input id="to" name="to" placeholder="recipient@email.com" type="text">
+        </p>
+        <p>
+            <label for="from">From</label>
+            <input id="from" name="from" placeholder="sender@email.com" type="text">
+        </p>
+        <p>
+            <label for="subject">Subject</label>
+            <input id="subject" name="subject" placeholder="Email subject" type="text">
+        </p>
+        <p>
+            <textarea id="email_body" name="email_body" placeholder="Content here"rows="10" cols="60"></textarea>
+        </p>
+        <label for="save_copy">
+            <input type="checkbox" id="save_copy" name="save_copy" value="yes" checked> Do you want to save a copy in the Sent folder?
+        </label>
+        <p>
+        <button type="submit">Send</button>
+        </p>
+    </form>
+    <h3>Multiple Choice Test</h3>
+    <form method="POST" action="http://requestb.in/18wzxuk1">
+        <p>What is the capital of Texas?</p>
+<label for="q1a">
+    <input type="radio" id="q1a" name="q1" value="Houston">
+    Houston
+</label>
+<label for="q1b">
+    <input type="radio" id="q1b" name="q1" value="Dallas">
+    Dallas
+</label>
+<label for="q1c">
+    <input type="radio" id="q1c" name="q1" value="Austin">
+    Austin
+</label>
+<label for="q1d">
+    <input type="radio" id="q1d" name="q1" value="San Antonio">
+    San Antonio
+</label>
+<p>What is the capital of California?</p>
+<label for="q2a">
+    <input type="radio" id="q2a" name="q2" value="Los Angeles">
+    Los Angeles
+</label>
+<label for="q2b">
+    <input type="radio" id="q2b" name="q2" value="San Diego">
+    San Diego
+</label>
+<label for="q2c">
+    <input type="radio" id="q2c" name="q2" value="San Francisco">
+    San Francisco
+</label>
+<label for="q2d">
+    <input type="radio" id="q2d" name="q2" value="Santa Barbara">
+    Santa Barbara
+</label>
+<p>What is the capital of Florida?</p>
+<label for="q3a">
+    <input type="radio" id="q3a" name="q3" value="Orlando">
+    Orlando
+</label>
+<label for="q3b">
+    <input type="radio" id="q3b" name="q3" value="Ft. Lauderdale">
+    Ft. Lauderdale
+</label>
+<label for="q3c">
+    <input type="radio" id="q3c" name="q3" value="Tampa">
+    Tampa
+</label>
+<label for="q3d">
+    <input type="radio" id="q3d" name="q3" value="Miami">
+    Miami
+</label>
+<p>
+    <button type="submit">Submit</button>
+</p>
+<p>What will you be learning at Codeup?</p>
+<label for="cu1"><input type="checkbox" id="cu1" name="cu[]" value="Linux"> Linux</label>
+<label for="cu2"><input type="checkbox" id="cu2" name="cu[]" value="Apache"> Apache</label>
+<label for="cu3"><input type="checkbox" id="cu3" name="cu[]" value="My SQL"> My SQL</label>
+<label for="cu4"><input type="checkbox" id="cu3" name="cu[]" value="PHP"> PHP</label>
+<p>
+    <button type="submit">Submit</button>
+</p>
+<h3>Select Testing</h3>
+<label for="allergies">Do you have any allergies?</label>
+<select id="allergies" name="allergies">
+    <option value="1">Yes</option>
+    <option value="0" selected>No</option>
+</select>
+<p>
+    <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
