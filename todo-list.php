@@ -47,6 +47,33 @@ if (isset($_GET['remove'])) {
 	exit(0);
 }
 
+// Verify there were uploaded files and no errors
+if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
+    // Set the destination directory for uploads
+    $upload_dir = '/vagrant/sites/codeup.dev/public/uploads/';
+    // Grab the filename from the uploaded file by using basename
+    $filename = basename($_FILES['upload_file']['name']);
+    // Create the saved filename using the file's original name and our upload directory
+    $saved_filename = $upload_dir . $filename;
+    // Move the file from the temp location to our uploads directory
+    move_uploaded_file($_FILES['upload_file']['tmp_name'], $saved_filename);
+
+    //check if file is text/plain
+    if ($_FILES['upload_file']['type'] == "text/plain") {
+
+		// Check if we saved a file
+		if (isset($saved_filename)) {
+    		// If we did, show a link to the uploaded file
+    		echo "<p>You can download your file <a href='/uploads/{$filename}'>here</a>.</p>";
+		}
+	}
+	else {
+		echo "Your file is not a plain text file";
+	}
+}
+
+// Check if uploaded file is a text file
+
 
 ?>
 
@@ -72,6 +99,17 @@ if (isset($_GET['remove'])) {
 			<label for="newitem">New item</label>
 			<input id="newitem" name="newitem" placeholder="Enter new item" type="text">
 			<input type="submit" value="add">
+		</p>
+	</form>	
+
+	<h1>Upload File</h1>
+	<form method="POST" enctype="multipart/form-data">
+		<p>
+			<label for="upload_file">Upload file</label>
+			<input id="upload_file" name="upload_file" type="file">
+		</p>
+		<p>
+			<input type="submit" value="Upload">
 		</p>
 
 	</form>	
