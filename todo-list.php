@@ -3,6 +3,7 @@
 // echo "<p>POST:</p>";
 // var_dump($_POST);
 // var_dump($_GET);
+$items = [];
 
 $filename = 'todo_list.txt';
 
@@ -36,7 +37,7 @@ $items = add_to_list($filename);
 if (isset($_POST['newitem'])) {
 	$new_item = $_POST['newitem'];
 	array_push($items, $new_item);
-	save_file($filename, $items);
+	save_file($filename, $items);			
 }
 
 if (isset($_GET['remove'])) {
@@ -47,33 +48,36 @@ if (isset($_GET['remove'])) {
 	exit(0);
 }
 
+$error_message = '';
 // Verify there were uploaded files and no errors
 if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
-    // Set the destination directory for uploads
-    $upload_dir = '/vagrant/sites/codeup.dev/public/uploads/';
-    // Grab the filename from the uploaded file by using basename
-    $filename = basename($_FILES['upload_file']['name']);
-    // Create the saved filename using the file's original name and our upload directory
-    $saved_filename = $upload_dir . $filename;
-    // Move the file from the temp location to our uploads directory
-    move_uploaded_file($_FILES['upload_file']['tmp_name'], $saved_filename);
-
-    //check if file is text/plain
+	//check if file is text/plain
     if ($_FILES['upload_file']['type'] == "text/plain") {
 
-		// Check if we saved a file
-		if (isset($saved_filename)) {
-    		// If we did, show a link to the uploaded file
-    		echo "<p>You can download your file <a href='/uploads/{$filename}'>here</a>.</p>";
-		}
-	}
-	else {
-		echo "Your file is not a plain text file";
-	}
+    	// Set the destination directory for uploads
+    	$upload_dir = '/vagrant/sites/codeup.dev/public/uploads/';
+    	// Grab the filename from the uploaded file by using basename
+    	$uploaded_filename = basename($_FILES['upload_file']['name']);
+    	// Create the saved filename using the file's original name and our upload directory
+    	$saved_filename = $upload_dir . $uploaded_filename;
+    	// Move the file from the temp location to our uploads directory
+    	move_uploaded_file($_FILES['upload_file']['tmp_name'], $saved_filename);
+    }
+    else { 
+    	$error_message .= "Invalid file type " . PHP_EOL;
+    }
+
+    $uploadedItems = add_to_list($saved_filename);
+    if ($_POST['overwrite'] == 'yes') {
+    	$items = $uploadedItems;
+    }
+    else {
+    	$items = array_merge($items, $uploadedItems);
+    }
+
+    save_file($filename, $items);
 }
-
-// Check if uploaded file is a text file
-
+    	
 
 ?>
 
@@ -85,13 +89,11 @@ if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
 <body>
 	<h2>TODO List</h2>
 	<ul>
-		<?php
 			
-			foreach ($items as $key => $item) {
-				echo "<li>$item <a href=\"?remove=$key\">Remove</a></li>";
-			}
+			<? foreach ($items as $key => $item) : ?>
+				<?= "<li>$item <a href=\"?remove=$key\">Remove</a></li>"; ?>
+			<? endforeach; ?>
 
-		?>
 	</ul>
 	<h2>Add items to the list</h2>
 	<form method="POST" action="todo-list.php">
@@ -101,12 +103,20 @@ if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
 			<input type="submit" value="add">
 		</p>
 	</form>	
+	<? if (!empty($error_message)) : ?>
+		<? echo "$error_message"; ?>
+	<? endif; ?>
 
 	<h1>Upload File</h1>
 	<form method="POST" enctype="multipart/form-data">
 		<p>
 			<label for="upload_file">Upload file</label>
 			<input id="upload_file" name="upload_file" type="file">
+		</p>
+		<p>
+			<label for="overwrite">
+    		<input type="checkbox" id="overwrite" name="overwrite" value="yes"> Do you want to overwrite existing items?
+			</label>
 		</p>
 		<p>
 			<input type="submit" value="Upload">
