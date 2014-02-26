@@ -35,7 +35,7 @@ $items = add_to_list($filename);
 // }
 
 if (isset($_POST['newitem'])) {
-	$new_item = $_POST['newitem'];
+	$new_item = htmlspecialchars(strip_tags($_POST['newitem']));
 	array_push($items, $new_item);
 	save_file($filename, $items);			
 }
@@ -91,7 +91,7 @@ if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
 	<ul>
 			
 			<? foreach ($items as $key => $item) : ?>
-				<?= "<li>$item <a href=\"?remove=$key\">Remove</a></li>"; ?>
+				<li><?= "$item <a href=\"?remove=$key\">Remove</a>"; ?></li>
 			<? endforeach; ?>
 
 	</ul>
