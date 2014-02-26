@@ -1,6 +1,6 @@
 <?php
 
-var_dump($_POST);
+//var_dump($_POST);
 
 $address_book = [];
 $fields = [];
@@ -15,33 +15,27 @@ function add_to_address_book($filename, $address_book) {
 	fclose($handle);
 }
 
+$error_message = [];
+
+
+foreach ($_POST as $key => $field) {
 	
-	if (isset($_POST['name'])) {
-		$new_item = htmlspecialchars(strip_tags($_POST['name']));
-		array_push($fields, $new_item);			
-	}
-	if (isset($_POST['address'])) {
-		$new_item = htmlspecialchars(strip_tags($_POST['address']));
-		array_push($fields, $new_item);			
-	}
-	if (isset($_POST['city'])) {
-		$new_item = htmlspecialchars(strip_tags($_POST['city']));
-		array_push($fields, $new_item);			
-	}
-	if (isset($_POST['state'])) {
-		$new_item = htmlspecialchars(strip_tags($_POST['state']));
-		array_push($fields, $new_item);			
-	}
-	if (isset($_POST['zip'])) {
-		$new_item = htmlspecialchars(strip_tags($_POST['zip']));
-		array_push($fields, $new_item);			
-	}
+	$new_item = htmlspecialchars(strip_tags($field));
 	
+	if (!empty($new_item)) {
+		array_push($fields, $new_item);	
+	}
+	else {
+		array_push($error_message, $key);
+		
+	}
+}
+	
+array_pop($error_message);	
 array_push($address_book, $fields);
 
-		
-var_dump($address_book);	
 add_to_address_book($filename, $address_book);
+
 
 ?>
 
@@ -55,6 +49,14 @@ add_to_address_book($filename, $address_book);
 	
 		<table>
 			<tr>
+					<th><?='Name'; ?></th>
+					<th><?='Address'; ?></th>
+					<th><?='City'; ?></th>
+					<th><?='State'; ?></th>
+					<th><?='Zip'; ?></th>
+					<th><?='Phone'; ?></th>
+			</tr>
+			<tr>
 			
 				<? foreach ($address_book as $fields) : ?>
 					<td><?= $_POST['name']; ?></td>
@@ -66,7 +68,11 @@ add_to_address_book($filename, $address_book);
 				<? endforeach; ?>
 			</tr>
 		</table>
-	
+	<? if (count($error_message) != 0) : ?>
+		<?//var_dump(count($error_message));?>
+		<?= "Must enter following fields: " . PHP_EOL; ?>
+		<?= implode(", ", $error_message); ?>
+	<? endif; ?>
 	<h2>Add items to the Address Book</h2>
 	<form method="POST" action="address_book.php">
 		<p>
