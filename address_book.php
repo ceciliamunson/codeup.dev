@@ -14,6 +14,11 @@ class AddressDataStore {
         $this->filename = $filename;
     }
 
+    function __destruct() 
+    {
+        echo "Class Dismissed!" . PHP_EOL;
+    }
+
 	function write_address_book($address_book) {
 	    
 	    $handle = fopen($this->filename, 'w+');
@@ -78,6 +83,7 @@ if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
 
     $book->write_address_book($address_book);
 }
+unset($book);
 
 ?>
 
