@@ -2,32 +2,38 @@
 
 //var_dump($_POST);
 
-$address_book = [];
 $fields = [];
-$filename = 'address_book.csv';
 
-function add_to_address_book($filename, $address_book) {
-    
-    $handle = fopen($filename, 'w+');
-    foreach ($address_book as $fields) {
-		fputcsv($handle, $fields);
+
+class AddressDataStore {
+
+    public $filename = '';
+
+	function write_address_book($address_book) {
+	    
+	    $handle = fopen($this->filename, 'w+');
+	    foreach ($address_book as $fields) {
+			fputcsv($handle, $fields);
+		}
+		fclose($handle);
 	}
-	fclose($handle);
-}
-
-function read_csv($filename, $address_book) {
-
-	$handle = fopen($filename, 'r');
-	while (($data = fgetcsv($handle)) !== FALSE) {
-  		$address_book[] = $data;
+	
+	function read_address_book() {
+	
+		$address_book = [];
+		$handle = fopen($this->filename, 'r');
+		while (($data = fgetcsv($handle)) !== FALSE) {
+	  		$address_book[] = $data;
+		}
+		fclose($handle);
+		return $address_book;
 	}
-	fclose($handle);
-	return $address_book;
 }
-$address_book = read_csv($filename, $address_book);
+$book = new AddressDataStore();
+$book->filename = 'address_book.csv';
+$address_book = $book->read_address_book();
+
 $error_message = [];
-
-
 
 if (!empty($_POST)) {
 	foreach ($_POST as $key => $field) {
@@ -38,22 +44,19 @@ if (!empty($_POST)) {
 		array_push($fields, $new_item);	
 	}
 	array_push($address_book, $fields);
-	add_to_address_book($filename, $address_book);
+	$book->write_address_book($address_book);
 }
 
 if (isset($_GET['remove'])) {
 	unset($address_book[$_GET['remove']]);
-	add_to_address_book($filename, $address_book);
+	$book->write_address_book($address_book);
 	//refreshes page to start at the beginning
 	header("Location: address_book.php");
 	exit(0);
 }
 
-
 var_dump($address_book);
 array_pop($error_message);	
-
-
 
 ?>
 
