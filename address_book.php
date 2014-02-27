@@ -9,6 +9,11 @@ class AddressDataStore {
 
     public $filename = '';
 
+    function __construct($filename = '')
+    {
+        $this->filename = $filename;
+    }
+
 	function write_address_book($address_book) {
 	    
 	    $handle = fopen($this->filename, 'w+');
@@ -29,8 +34,7 @@ class AddressDataStore {
 		return $address_book;
 	}
 }
-$book = new AddressDataStore();
-$book->filename = 'address_book.csv';
+$book = new AddressDataStore('address_book.csv');
 $address_book = $book->read_address_book();
 
 $error_message = [];
