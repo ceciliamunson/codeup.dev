@@ -59,8 +59,25 @@ if (isset($_GET['remove'])) {
 	exit(0);
 }
 
-var_dump($address_book);
 array_pop($error_message);	
+
+if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
+
+    // Set the destination directory for uploads
+    $upload_dir = '/vagrant/sites/codeup.dev/public/uploads/';
+    // Grab the filename from the uploaded file by using basename
+    $uploaded_filename = basename($_FILES['upload_file']['name']);
+    // Create the saved filename using the file's original name and our upload directory
+    $saved_filename = $upload_dir . $uploaded_filename;
+    // Move the file from the temp location to our uploads directory
+    move_uploaded_file($_FILES['upload_file']['tmp_name'], $saved_filename);
+    $book2 = new AddressDataStore("$uploaded_filename");
+    $uploadedItems = $book2->read_address_book($saved_filename);
+ 
+    $address_book = array_merge($address_book, $uploadedItems);
+
+    $book->write_address_book($address_book);
+}
 
 ?>
 
@@ -126,6 +143,16 @@ array_pop($error_message);
 			<input type="submit" value="add">
 		</p>
 	</form>
+	<form method="POST" enctype="multipart/form-data">
+		<p>
+			<label for="upload_file">Upload file</label>
+			<input id="upload_file" name="upload_file" type="file">
+		</p>
+		<p>
+			<input type="submit" value="Upload">
+		</p>
+
+	</form>	
 	
 </body>
 </html>
