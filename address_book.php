@@ -5,7 +5,7 @@
 $address_book = [];
 $fields = [];
 
-include('address_data_store.php');
+require_once('address_data_store.php');
 
 $book = new AddressDataStore('address_book.csv');
 $address_book = $book->read_address_book();
