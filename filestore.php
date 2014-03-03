@@ -42,6 +42,14 @@ class Filestore {
 
     }
 
+    public function validate($input) {
+
+        if (strlen($input) > 125) {
+
+            throw new Exception("$input must be no longer than 125 characters");
+        }
+    }
+
     /**
      * Returns array of lines in $this->filename
      */
