@@ -1,5 +1,7 @@
 <?php
 
+class InvaidInputException extends Exception {}
+
 class Filestore {
 
     public $filename = '';
@@ -42,11 +44,11 @@ class Filestore {
 
     }
 
-    public function validate($input) {
+    public function validate_addressbook_input($input) {
 
         if (strlen($input) > 125) {
 
-            throw new Exception("$input must be no longer than 125 characters");
+            throw new InvaidInputException("Input can't be longer than 125 characters. ");
         }
     }
 
@@ -71,9 +73,10 @@ class Filestore {
         
         $handle = fopen($this->filename, 'w');        
         foreach ($array as $content) {
-                    fwrite($handle, PHP_EOL . $content);
-                }
-                fclose($handle);
+            //fwrite($handle, PHP_EOL . $content);
+            fwrite($handle, implode("\n", $contents));
+        }
+        fclose($handle);
         
     }
 
