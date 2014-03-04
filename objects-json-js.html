@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>If else JS</title>
+</head>
+<body>
+	<script>
+		// todo:
+		// Create an array of object that represent books.
+		// Each book should have a title and an author.
+		// The book author should be an object with a firstName and lastName.
+		// Be creative and add at least 5 books to the array
+		var books = [
+			{
+				Title: "Concealed in Death",
+				Author: {
+					firstName: "J. D.",
+					lastName: "Robb"
+				}
+			},
+			{
+				Title: "Private L.A.",
+				Author: {
+					firstName: "James",
+					lastName: "Patterson"
+				}
+			},
+			{
+				Title: "Lone Survivor",
+				Author: {
+					firstName: "Marcus",
+					lastName: "Luttrell"
+				}
+			},
+			{
+				Title: "Unbroken",
+				Author: {
+					firstName: "Laura",
+					lastName: "Hillenbrand"
+				}
+			},
+			{
+				Title: "Duty",
+				Author: {
+					firstName: "Robert",
+					lastName: "Gates"
+				}
+			},
+
+
+
+
+		];
+		
+		// log out the books array
+		console.log(books);
+		
+		// todo:
+		// Loop through the array of books using .forEach and print out the specified information about each one.
+		books.forEach(function (element, index, array) {
+		    console.log("Book #" + index);
+		    console.log("Title: " + element.Title);
+		    console.log("Author: " + element.Author.firstName + ' ' + element.Author.lastName);
+		    console.log("---");
+		});
+	</script>
+</body>
+</html>
