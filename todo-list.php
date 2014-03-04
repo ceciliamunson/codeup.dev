@@ -1,48 +1,26 @@
 <?php
 
-// echo "<p>POST:</p>";
-// var_dump($_POST);
-// var_dump($_GET);
+require_once('filestore.php');
+
+$file = new Filestore('todo_list.txt');
+
+
 $items = [];
 
-$filename = 'todo_list.txt';
 
-function add_to_list($filename) {
-       
-    $handle = fopen($filename, "r");
-    $contents = fread($handle, filesize($filename));
-    fclose($handle);    
-    return explode("\n", $contents);
+$items = $file->read();
 
-}
 
-function save_file($filename, $items) {
-
-	$items_string = implode("\n", $items);
-	$handle = fopen($filename, 'w');        
-    fwrite($handle, $items_string);
-   	fclose($handle);
-
-}
-$items = add_to_list($filename);
-
-//check that file is not empty
-// if (filesize($filename > 0)) {
-// 	$items = add_to_list($filename);
-// }
-// else {
-// 	$items = [];
-// }
 
 if (isset($_POST['newitem'])) {
 	$new_item = htmlspecialchars(strip_tags($_POST['newitem']));
 	array_push($items, $new_item);
-	save_file($filename, $items);			
+	$file->write($items);			
 }
 
 if (isset($_GET['remove'])) {
 	unset($items[$_GET['remove']]);
-	save_file($filename, $items);
+	$file->write($items);
 	//refreshes page to start at the beginning
 	header("Location: todo-list.php");
 	exit(0);
@@ -67,7 +45,7 @@ if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
     	$error_message .= "Invalid file type " . PHP_EOL;
     }
 
-    $uploadedItems = add_to_list($saved_filename);
+    $uploadedItems = $file->read();
     if ($_POST['overwrite'] == 'yes') {
     	$items = $uploadedItems;
     }
@@ -75,7 +53,7 @@ if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
     	$items = array_merge($items, $uploadedItems);
     }
 
-    save_file($filename, $items);
+    $file->write($items);
 }
     	
 
@@ -115,7 +93,7 @@ if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
 		</p>
 		<p>
 			<label for="overwrite">
-    		<input type="checkbox" id="overwrite" name="overwrite" value="yes"> Do you want to overwrite existing items?
+    		<input type="checkbox" id="overwrite" name="overwrite" value="yes"> I want to overwrite existing items
 			</label>
 		</p>
 		<p>
