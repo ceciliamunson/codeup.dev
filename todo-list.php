@@ -14,6 +14,7 @@ $items = $file->read();
 
 if (isset($_POST['newitem'])) {
 	$new_item = htmlspecialchars(strip_tags($_POST['newitem']));
+	$file->validate_input($new_item);
 	array_push($items, $new_item);
 	$file->write($items);			
 }
