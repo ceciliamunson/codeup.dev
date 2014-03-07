@@ -20,6 +20,15 @@ div>img {
 	right:-40px;
 
 }
+
+img {
+
+	position:fixed;
+	top:0px;
+	right:0px;
+
+}
+
 #red { 
 	background-color:#F00;
 	
