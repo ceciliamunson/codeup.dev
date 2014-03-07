@@ -1,6 +1,8 @@
 <?php
 
-class InvaidInputException extends Exception {}
+class InvalidAddressbookInputException extends Exception {}
+
+class InvalidTodoInputException extends Exception {}
 
 class Filestore {
 
@@ -44,11 +46,19 @@ class Filestore {
 
     }
 
+    public function validate_input($new_item) {
+
+        if (empty($new_item) || (strlen($new_item) > 240)) {
+
+            throw new InvalidTodoInputException("Must enter input shorter or equal to 125 characters. ");
+        }
+    }
+
     public function validate_addressbook_input($input) {
 
         if (strlen($input) > 125) {
 
-            throw new InvaidInputException("Input can't be longer than 125 characters. ");
+            throw new InvalidAddressbookInputException("Input can't be longer than 125 characters. ");
         }
     }
 
@@ -58,10 +68,19 @@ class Filestore {
     // for todo list
     private function read_lines()
     {
-        $handle = fopen($this->filename, "r");
-        $contents = fread($handle, filesize($this->filename));
-        fclose($handle);    
-        return  explode("\n", $contents);
+        $filesize = filesize($this->filename);
+        if ($filesize == 0) {
+
+            $contents = [];
+        }
+        else {
+
+            $handle = fopen($this->filename, "r");
+            $contents = fread($handle, $filesize);
+            fclose($handle);    
+            $contents =explode("\n", $contents);
+        }
+        return $contents;
     }
 
     /**
@@ -70,12 +89,9 @@ class Filestore {
     //for todo list
     private function write_lines($array)
     {   
-        
         $handle = fopen($this->filename, 'w');        
-        foreach ($array as $content) {
-            //fwrite($handle, PHP_EOL . $content);
-            fwrite($handle, implode("\n", $contents));
-        }
+        $items_string = implode("\n", $array);
+        fwrite($handle, $items_string);
         fclose($handle);
         
     }
