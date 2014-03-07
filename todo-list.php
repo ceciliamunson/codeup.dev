@@ -9,19 +9,28 @@ $items = [];
 
 
 $items = $file->read();
-
+var_dump($items);
 
 
 if (isset($_POST['newitem'])) {
 	$new_item = htmlspecialchars(strip_tags($_POST['newitem']));
-	$file->validate_input($new_item);
+	try {
+		$file->validate_input($new_item);
+	}
+	catch (InvalidTodoInputException $e) {
+		echo $e->getMessage();
+		echo "Please try again";
+		exit();
+	}
 	array_push($items, $new_item);
 	$file->write($items);			
 }
 
 if (isset($_GET['remove'])) {
 	unset($items[$_GET['remove']]);
-	$file->write($items);
+	
+		$file->write($items);
+	
 	//refreshes page to start at the beginning
 	header("Location: todo-list.php");
 	exit(0);
@@ -64,6 +73,7 @@ if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
 <html>
 <head>
 		<title>TODO List</title>
+		<link rel="stylesheet" href="/css/todo.css">
 </head>
 <body>
 	<h2>TODO List</h2>
@@ -86,7 +96,7 @@ if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
 		<? echo "$error_message"; ?>
 	<? endif; ?>
 
-	<h1>Upload File</h1>
+	<h2>Upload File</h2>
 	<form method="POST" enctype="multipart/form-data">
 		<p>
 			<label for="upload_file">Upload file</label>
