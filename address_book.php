@@ -1,16 +1,32 @@
 <?php
 
-//var_dump($_POST);
-
-$address_book = [];
-$fields = [];
 
 require_once('address_data_store.php');
 
-$book = new AddressDataStore('address_book.csv');
-$address_book = $book->read_address_book();
 
 $error_message = [];
+$fields = [];
+
+$file = new AddressDataStore('address_book.csv');
+$address_book = $file->read();
+
+if ((count($_FILES) > 0) && ($_FILES['upload_file']['error'] == 0)) {
+
+    // Set the destination directory for uploads
+    $upload_dir = '/vagrant/sites/codeup.dev/public/uploads/';
+    // Grab the filename from the uploaded file by using basename
+    $uploaded_filename = basename($_FILES['upload_file']['name']);
+    // Create the saved filename using the file's original name and our upload directory
+    $saved_filename = $upload_dir . $uploaded_filename;
+    // Move the file from the temp location to our uploads directory
+    move_uploaded_file($_FILES['upload_file']['tmp_name'], $saved_filename);
+    $file2 = new AddressDataStore("$uploaded_filename");
+    $uploadedItems = $file2->read($saved_filename);
+ 
+    $address_book = array_merge($address_book, $uploadedItems);
+
+    $file->write($address_book);
+}
 
 if (!empty($_POST)) {
 	foreach ($_POST as $key => $field) {
@@ -18,21 +34,31 @@ if (!empty($_POST)) {
 		if (empty($new_item)) {
 			array_push($error_message, $key);
 		}
+		else {
+			// Validate if input is < 125 characters
+			try {
+				$file->validate_addressbook_input($field);
+			}
+			catch (InvalidAddressbookInputException $e) {
+				echo $e->getMessage();
+				echo "Please try again";
+				exit();
+			}
 		array_push($fields, $new_item);	
+		}
 	}
 	array_push($address_book, $fields);
-	$book->write_address_book($address_book);
+	$file->write($address_book);
 }
 
 if (isset($_GET['remove'])) {
 	unset($address_book[$_GET['remove']]);
-	$book->write_address_book($address_book);
+	$file->write($address_book);
 	//refreshes page to start at the beginning
 	header("Location: address_book.php");
 	exit(0);
 }
 
-var_dump($address_book);
 array_pop($error_message);	
 
 ?>
@@ -99,6 +125,17 @@ array_pop($error_message);
 			<input type="submit" value="add">
 		</p>
 	</form>
+	<form method="POST" enctype="multipart/form-data">
+		<p>
+			<label for="upload_file">Upload file</label>
+			<input id="upload_file" name="upload_file" type="file">
+		</p>
+		<p>
+			<input type="submit" value="Upload">
+		</p>
+
+	</form>	
+	
 	
 </body>
 </html>
