@@ -13,7 +13,8 @@ $limit = 10;
 
 if (!empty($_GET['page'])) {
     $page = $_GET['page'];
-}
+
+} 
 else {
 
     $page = 1;
@@ -31,8 +32,8 @@ else {
 
 if (!empty($_POST)) {
 
-    if(!empty($_POST['form_type']) && $_POST['form_type'] == 'remove_form')
-    {
+    if(!empty($_POST['form_type']) && $_POST['form_type'] == 'remove_form') {
+
         $id = $_POST['remove'];
 
         // Create the prepared statement
@@ -43,12 +44,12 @@ if (!empty($_POST)) {
         
         // execute query, return result
         $stmt->execute();
-    }
-     else {
 
-        try {
+    } 
+
+    else {
             if (isset($_POST['newitem']) && $_POST['newitem'] == "") {
-                throw new Exception("Field can't be empty!  ");
+                $errorMessage = "Field can't be empty! ";
             }
             
             else {
@@ -60,12 +61,7 @@ if (!empty($_POST)) {
                 $stmt = $mysqli->prepare("INSERT INTO todo_items (items) VALUES (?)");                
                 $stmt->bind_param("s", $newitem);
                 $stmt->execute();
-            }
-        }       
-        catch (Exception $e) {
-        
-            $errorMessage = $e->getMessage();
-        }
+            }            
     }       
 }
 
@@ -120,12 +116,12 @@ $mysqli->close();
     <h2>TODO List</h2>
 
         <table class="table table-striped">
-        <?php foreach ($rows as $row) {?>
-                <tr>
-                  <td><?=$row['items']; ?></td>
-                  <td><button class="btn btn-danger btn-sm pull-right" onclick="removeById(<?= $row['id']; ?>)">Remove</button></td>
-                </tr>
-        <?php } ?>
+        <? foreach ($rows as $row) :?>
+            <tr>
+              <td><?=$row['items']; ?></td>
+              <td><button class="btn btn-danger btn-sm pull-right" onclick="removeById(<?= $row['id']; ?>)">Remove</button></td>
+            </tr>
+        <? endforeach; ?>
     </table>
 
     <div>
