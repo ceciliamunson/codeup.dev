@@ -11,13 +11,23 @@ if ($mysqli->connect_errno) {
 // set page limit
 $limit = 10;
 
-$result = $mysqli->query("SELECT * FROM todo_items");
+if (!empty($_GET['page'])) {
+    $page = $_GET['page'];
+}
+else {
 
-$num_rows = $result->num_rows;
+    $page = 1;
+}
 
-$num_pages = ceil($num_rows / $limit);
+if ($page > 1) {
 
-$result->close();
+    $offset = ($_GET['page'] * $limit) - $limit;
+}
+else {
+    $offset = 0;
+}
+
+
 
 if (!empty($_POST)) {
 
@@ -37,43 +47,28 @@ if (!empty($_POST)) {
      else {
 
         try {
-            if (empty($_POST['newitem'])) {
+            if (isset($_POST['newitem']) && $_POST['newitem'] == "") {
                 throw new Exception("Field can't be empty!  ");
             }
-            else {
             
-                // Create the prepared statement
-                $stmt = $mysqli->prepare("INSERT INTO todo_items (items) VALUES (?)");
+            else {
                 
-                // bind parameters
-                $stmt->bind_param("s", $_POST['newitem']);
-                
-                // execute query, return result
+                // truncate text to be <= 240 characters
+                $newitem = substr($_POST['newitem'], 0, 240);
+
+                // add to database
+                $stmt = $mysqli->prepare("INSERT INTO todo_items (items) VALUES (?)");                
+                $stmt->bind_param("s", $newitem);
                 $stmt->execute();
             }
-        } 
+        }       
         catch (Exception $e) {
         
             $errorMessage = $e->getMessage();
         }
-    }
+    }       
 }
 
-
-if (!empty($_GET['page'])) {
-    $page = $_GET['page'];
-}
-else {
-
-    $page = 1;
-}
- if ($page > 1) {
-
-    $offset = ($_GET['page'] * $limit) - $limit;
- }
-else {
-    $offset = 0;
-}
 
 // create prepared statements       
 $stmt = $mysqli->prepare("SELECT * FROM todo_items LIMIT ? OFFSET ?");
@@ -93,6 +88,14 @@ while ($stmt->fetch()) {
     $rows[] = array('id' => $id, 'items' => $items);
 }
 
+$result = $mysqli->query("SELECT * FROM todo_items");
+
+$num_rows = $result->num_rows;
+
+$num_pages = ceil($num_rows / $limit);
+
+$result->close();
+
 // close connection
 $mysqli->close();
 
@@ -110,35 +113,41 @@ $mysqli->close();
 </head>
 
 <body>
-
-	<h2>TODO List</h2>
-	<ul>
-		<?php foreach ($rows as $row) {?>
-
-    		      <li><?=$row['items']; ?> <button onclick="removeById(<?= $row['id']; ?>)">Remove</button></li>
-    	<?php } ?>
-	</ul>
-
-    <? if ($page > 1): ?>
-        <? $page_no = $page - 1; ?>
-        <a href="?page=<?= $page_no; ?>">Previous</a>
-    <? endif; ?>
-
-    <? if ($page < $num_pages): ?>
-        <? $page_no = $page + 1; ?>
-        <a href="?page=<?= $page_no; ?>">Next</a>
-    <? endif; ?>
-
-	<h4>Add items to the list</h4>
-
-	<!-- Button trigger modal -->
-    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-      Add todo item
-    </button>
-    
+<div class="container">
     <?php if (!empty($errorMessage)) { ?>
         <div class="alert alert-danger"><?= $errorMessage ?></div>
     <?php } ?>
+    <h2>TODO List</h2>
+
+        <table class="table table-striped">
+        <?php foreach ($rows as $row) {?>
+                <tr>
+                  <td><?=$row['items']; ?></td>
+                  <td><button class="btn btn-danger btn-sm pull-right" onclick="removeById(<?= $row['id']; ?>)">Remove</button></td>
+                </tr>
+        <?php } ?>
+    </table>
+
+    <div>
+        <? if ($page > 1): ?>
+            <? $page_no = $page - 1; ?>
+            <a href="?page=<?= $page_no; ?>">&lt; Previous</a>
+        <? endif; ?>
+    
+        <? if ($page < $num_pages): ?>
+            <? $page_no = $page + 1; ?>
+            <a href="?page=<?= $page_no; ?>">Next &gt;</a>
+        <? endif; ?>
+    </div>
+    <br>
+
+    <!-- Button trigger modal -->
+    <p>
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+          Add new todo item
+        </button>
+    </p>
+    
     
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -161,7 +170,8 @@ $mysqli->close();
         </div>
       </div>
     </div>
-    
+</div>
+
     <!-- Hidden form javascript uses it to submit so we have post and not get -->
     <form id="removeForm" action="mysql-todo-list.php" method="POST">
     	<input id="removeId" type="hidden" name="remove" value="">
@@ -177,11 +187,13 @@ $mysqli->close();
     
         // form called from button onclick
     	function removeById(id) {
-            // change hidden field id to button clicked passed as param id
-    		removeId.value = id;
-    
-            // submit form
-    		form.submit();
+            if (confirm('Are you sure you want to remove item?')) {
+                // change hidden field id to button clicked passed as param id
+    		    removeId.value = id;
+        
+                // submit form
+    		    form.submit();
+            }
     	}
     </script>
     
