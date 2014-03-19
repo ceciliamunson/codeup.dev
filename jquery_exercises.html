@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>jQuery</title>
+</head>
+<body>
+<script src="/js/jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    alert( 'The DOM has finished loading!' );
+});
+</script>
+<script>
+        $('document').ready(function() {
+            var contents = $('#paragraph').html();
+            alert(contents);
+        });
+    </script>
+<h1 id="main-header">Top 5 headache-healing Foods</h1>
+<p id="paragraph">Instead of grabbing a bottle of aspirin, reach in your fridge to get one of the following foods nature has to offer that will get rid of your headache.</p>
+<div>
+	<ul class="list">
+		<li>Almonds</li>
+		<li>Milk</li>
+		<li>Peanut butter</li>
+		<li>Salmon</li>
+		<li>Cherries</li>
+	</ul>
+</div>
+
+</body>
+</html>
