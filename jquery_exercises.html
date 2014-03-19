@@ -3,23 +3,19 @@
 
 <head>
 	<title>jQuery</title>
+	<script src="/js/jquery.js"></script>
+	<script>
+	        $('document').ready(function() {
+	            $('.codeup').css('border-width', '1px');
+	            $('.codeup').css('border-color', '#F00');
+	            $('.codeup').css('border-style', 'solid');
+	        });
+	</script>
 </head>
 <body>
-<script src="/js/jquery.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    alert( 'The DOM has finished loading!' );
-});
-</script>
-<script>
-        $('document').ready(function() {
-            var contents = $('#paragraph').html();
-            alert(contents);
-        });
-    </script>
-<h1 id="main-header">Top 5 headache-healing Foods</h1>
-<p id="paragraph">Instead of grabbing a bottle of aspirin, reach in your fridge to get one of the following foods nature has to offer that will get rid of your headache.</p>
-<div>
+<h1 class="codeup">Top 5 headache-healing Foods</h1>
+<p class="codeup">Instead of grabbing a bottle of aspirin, reach in your fridge to get one of the following foods nature has to offer that will get rid of your headache.</p>
+<div class="codeup">
 	<ul class="list">
 		<li>Almonds</li>
 		<li>Milk</li>
