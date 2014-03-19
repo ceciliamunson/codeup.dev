@@ -3,19 +3,34 @@
 
 <head>
 	<title>jQuery</title>
+	<style>
+		#main-header {
+			cursor: pointer;
+		}
+	</style>
 	<script src="/js/jquery.js"></script>
 	<script>
-	        $('document').ready(function() {
-	        $('li').css('font-size', '20px');
-	        $('.codeup').css('background-color', '#FF0');
-	        var contents = $('h1').html();
-            alert(contents);
-	        });
+    	$('document').ready(function() {
+    		$('#main-header').click(function() {
+    			$(this).css('background-color', '#FF0');
+    		});
+    		$('p').dblclick(function() {
+                $(this).css('font-size', '18px');
+            });
+            $('li').hover(
+        		function() {
+        		    $(this).css('color', '#F00');
+        		},
+        		function() {
+        		    $(this).css('color', '#FFF');
+        		}
+    		);
+        });
 	</script>
     
 </head>
 <body>
-<h1 class="codeup">Top 5 headache-healing Foods</h1>
+<h1 id="main-header">Top 5 headache-healing Foods</h1>
 <p class="codeup">Instead of grabbing a bottle of aspirin, reach in your fridge to get one of the following foods nature has to offer that will get rid of your headache.</p>
 <div>
 	<ul class="codeup">
