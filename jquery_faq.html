@@ -8,7 +8,7 @@
 	<script>
         $('document').ready(function() {
       
-           $('dt').addClass('bold');
+           $('dt, h3').addClass('bold');
 
            $('dt').on('click', function() {
 
@@ -22,11 +22,11 @@
 
            });
 
+           	$('h3').on('click', function() {
+           	
+           		$(this).next().fadeToggle();
 
-           $('li').click(function() {
-
-           		$(this).parent().hide();
-           });
+           	});
 			
 
         });
