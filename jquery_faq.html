@@ -18,6 +18,19 @@
 
            });
 
+           $('ul').each(function() {
+
+           	$(this).children().first().css('font-weight', 'bold');
+
+           });
+
+
+           $('li').click(function() {
+
+           		$(this).parent().addClass('invisible');
+           });
+			
+
         });
     </script>
 
@@ -62,6 +75,28 @@
 	    <dd>TBefore you head out, check with the national parks that you intend to visit. In many national parks, off-road driving is illegal. Where off-road driving is allowed, the National Park Service regulates it.</dd>
 	</dl>
 </p>
+<h1>Parks List</h1>
+    <h3>Big Bend</h3>
+    <ul class="park">
+        <li>Total area is 801,163 acres</li>
+        <li>It was created on June 20, 1935</li>
+        <li>Entrance fee is $15 per vehicle per week</li>
+        <li>Highest elevation is 7,832 feet on Emory Peak</li>
+    </ul>
+    <h3>Enchanted Rock</h3>
+    <ul class="park">
+        <li>Total ares is 1,643 acres</li>
+        <li>It has a 500-foot-high dome of pink granite, the second largest such formation in North America</li>
+        <li>Entrance fee is $5 per person per day</li>
+        <li>The park offers 7 miles of hiking trails</li>
+    </ul>
+    <h3>Lost Mapples</h3>
+    <ul class="park">
+        <li>Total area is 2,174 acres</li>
+        <li>The park was opened to the public in 1979</li>
+        <li>Entrance fee is $5 per person per day</li>
+        <li>The park contains 11 miles (18 km) of hiking trails, 30 campsites, and 8 primitive camping areas</li>
+    </ul>
 
 </body>
 </html>
