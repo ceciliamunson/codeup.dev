@@ -7,6 +7,9 @@
 	<script src="/js/jquery.js"></script>
 	<script>
         $('document').ready(function() {
+
+           $('img').fadeIn();
+
       
 			     $('img').on('click', function() {
 
@@ -19,17 +22,18 @@
 
     <style>
 
-    	.bold {
-    		font-weight: bold;
-    		cursor: pointer;
+    	#image {
+    		
+        display:none;
+
     	}
 
     </style>
     
 </head>
 <body>
-<h1 id="main-header">Whack-a-mole</h1>
-<img src="img/codeup-arrow.png">
+<h1>Whack-a-mole</h1>
+<img id="image" src="img/codeup-arrow.png">
 
 
 </body>
