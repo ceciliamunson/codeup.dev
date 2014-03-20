@@ -10,11 +10,9 @@
       
            $('dt').addClass('bold');
 
-           $('dd').addClass('invisible');
-
            $('dt').on('click', function() {
 
-           	  $(this).next().toggleClass('invisible');
+           	  $(this).next().fadeToggle();
 
            });
 
@@ -27,7 +25,7 @@
 
            $('li').click(function() {
 
-           		$(this).parent().addClass('invisible');
+           		$(this).parent().hide();
            });
 			
 
@@ -35,10 +33,6 @@
     </script>
 
     <style>
-
-    	.invisible {
-    		display: none;
-    	}
 
     	.bold {
     		font-weight: bold;
